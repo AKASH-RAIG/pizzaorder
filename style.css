@@ -783,3 +783,48 @@ footer {
   .cart-panel { max-width: 100%; }
   .deal-banner { flex-direction: column; text-align: center; }
 }
+/* ── CART SUMMARY FIX ── */
+.summary-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.875rem;
+  color: var(--gray);
+  padding: 0.35rem 0;
+}
+
+.summary-row.discount {
+  color: #2e7d32;
+  font-weight: 600;
+}
+
+.summary-row.total {
+  color: var(--dark);
+  font-weight: 800;
+  font-size: 1.1rem;
+  border-top: 2px solid var(--border);
+  border-bottom: 2px solid var(--border);
+  padding: 0.75rem 0;
+  margin-top: 0.5rem;
+}
+
+.free-tag {
+  background: #e8f5e9;
+  color: #2e7d32;
+  font-size: 0.78rem;
+  font-weight: 700;
+  padding: 0.15rem 0.5rem;
+  border-radius: 50px;
+  border: 1px solid #a5d6a7;
+}
+
+.free-delivery-hint {
+  background: #fff8e1;
+  border: 1px dashed #ffc107;
+  border-radius: 8px;
+  padding: 0.6rem 0.85rem;
+  font-size: 0.8rem;
+  color: #795548;
+  margin-top: 0.75rem;
+  text-align: center;
+}
