@@ -4,981 +4,14 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>PizzaHub – Order Online</title>
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-
-    :root {
-      --red: #e31837;
-      --dark-red: #c0122d;
-      --blue: #006491;
-      --dark: #1a1a1a;
-      --light: #f5f5f5;
-      --white: #ffffff;
-      --gray: #666;
-      --border: #e0e0e0;
-    }
-
-    html { scroll-behavior: smooth; }
-
-    body {
-      font-family: 'Segoe UI', sans-serif;
-      background: var(--light);
-      color: var(--dark);
-    }
-
-    /* ── TOPBAR ── */
-    .topbar {
-      background: var(--blue);
-      color: white;
-      text-align: center;
-      padding: 0.4rem;
-      font-size: 0.82rem;
-      letter-spacing: 0.5px;
-    }
-
-    /* ── NAVBAR ── */
-    nav {
-      background: var(--red);
-      position: sticky;
-      top: 0;
-      z-index: 1000;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-    }
-
-    .nav-inner {
-      max-width: 1200px;
-      margin: 0 auto;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0.75rem 1.5rem;
-      gap: 1rem;
-    }
-
-    .logo {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      text-decoration: none;
-    }
-
-    .logo-icon {
-      font-size: 2rem;
-    }
-
-    .logo-text {
-      display: flex;
-      flex-direction: column;
-      line-height: 1;
-    }
-
-    .logo-text span:first-child {
-      font-size: 1.4rem;
-      font-weight: 900;
-      color: white;
-      letter-spacing: 1px;
-    }
-
-    .logo-text span:last-child {
-      font-size: 0.65rem;
-      color: rgba(255,255,255,0.8);
-      letter-spacing: 2px;
-      text-transform: uppercase;
-    }
-
-    .nav-search {
-      flex: 1;
-      max-width: 380px;
-      display: flex;
-      background: white;
-      border-radius: 50px;
-      overflow: hidden;
-    }
-
-    .nav-search input {
-      flex: 1;
-      border: none;
-      outline: none;
-      padding: 0.55rem 1rem;
-      font-size: 0.9rem;
-      background: transparent;
-    }
-
-    .nav-search button {
-      background: var(--blue);
-      border: none;
-      color: white;
-      padding: 0 1rem;
-      cursor: pointer;
-      font-size: 1rem;
-    }
-
-    .nav-actions {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-    }
-
-    .nav-link {
-      color: white;
-      text-decoration: none;
-      font-size: 0.85rem;
-      font-weight: 600;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 2px;
-      opacity: 0.9;
-      transition: opacity 0.2s;
-    }
-
-    .nav-link:hover { opacity: 1; }
-    .nav-link .icon { font-size: 1.2rem; }
-
-    .cart-btn {
-      background: var(--dark-red);
-      color: white;
-      border: none;
-      border-radius: 50px;
-      padding: 0.55rem 1.25rem;
-      font-size: 0.9rem;
-      font-weight: 700;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      transition: background 0.2s;
-      position: relative;
-    }
-
-    .cart-btn:hover { background: #a50f26; }
-
-    .cart-count {
-      background: white;
-      color: var(--red);
-      border-radius: 50%;
-      width: 20px;
-      height: 20px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 0.75rem;
-      font-weight: 900;
-    }
-
-    /* ── HERO ── */
-    .hero {
-      background: linear-gradient(135deg, #1a0005 0%, #5a0010 40%, #e31837 100%);
-      color: white;
-      padding: 3.5rem 1.5rem;
-      text-align: center;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .hero::before {
-      content: '🍕';
-      position: absolute;
-      font-size: 18rem;
-      opacity: 0.06;
-      top: -40px;
-      right: -40px;
-      line-height: 1;
-    }
-
-    .hero-inner {
-      max-width: 700px;
-      margin: 0 auto;
-      position: relative;
-      z-index: 1;
-    }
-
-    .hero h1 {
-      font-size: clamp(2rem, 5vw, 3.2rem);
-      font-weight: 900;
-      line-height: 1.1;
-      margin-bottom: 1rem;
-    }
-
-    .hero h1 span { color: #ffd700; }
-
-    .hero p {
-      font-size: 1.05rem;
-      opacity: 0.85;
-      margin-bottom: 2rem;
-    }
-
-    .delivery-bar {
-      display: inline-flex;
-      background: rgba(255,255,255,0.12);
-      border: 2px solid rgba(255,255,255,0.25);
-      border-radius: 50px;
-      overflow: hidden;
-      margin-bottom: 1.5rem;
-    }
-
-    .delivery-tab {
-      padding: 0.6rem 1.5rem;
-      font-size: 0.95rem;
-      font-weight: 700;
-      cursor: pointer;
-      transition: all 0.3s;
-      color: rgba(255,255,255,0.7);
-    }
-
-    .delivery-tab.active {
-      background: white;
-      color: var(--red);
-      border-radius: 50px;
-    }
-
-    .hero-offer {
-      display: flex;
-      justify-content: center;
-      gap: 1.5rem;
-      flex-wrap: wrap;
-    }
-
-    .offer-badge {
-      background: rgba(255,215,0,0.15);
-      border: 1px solid rgba(255,215,0,0.4);
-      color: #ffd700;
-      padding: 0.5rem 1.2rem;
-      border-radius: 50px;
-      font-size: 0.85rem;
-      font-weight: 600;
-    }
-
-    /* ── CATEGORIES ── */
-    .categories {
-      background: white;
-      border-bottom: 3px solid var(--border);
-      position: sticky;
-      top: 64px;
-      z-index: 900;
-    }
-
-    .cat-inner {
-      max-width: 1200px;
-      margin: 0 auto;
-      display: flex;
-      gap: 0;
-      overflow-x: auto;
-      scrollbar-width: none;
-    }
-
-    .cat-inner::-webkit-scrollbar { display: none; }
-
-    .cat-item {
-      flex-shrink: 0;
-      padding: 1rem 1.5rem;
-      font-size: 0.9rem;
-      font-weight: 600;
-      color: var(--gray);
-      cursor: pointer;
-      border-bottom: 3px solid transparent;
-      margin-bottom: -3px;
-      transition: all 0.2s;
-      white-space: nowrap;
-      display: flex;
-      align-items: center;
-      gap: 0.4rem;
-    }
-
-    .cat-item:hover { color: var(--red); }
-    .cat-item.active { color: var(--red); border-color: var(--red); }
-
-    /* ── MAIN CONTENT ── */
-    .main {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 2rem 1.5rem;
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 2.5rem;
-    }
-
-    /* ── DEAL BANNER ── */
-    .deal-banner {
-      background: linear-gradient(135deg, var(--blue), #003f5c);
-      border-radius: 16px;
-      padding: 1.75rem 2rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      color: white;
-      gap: 1rem;
-    }
-
-    .deal-banner h2 { font-size: 1.5rem; font-weight: 800; }
-    .deal-banner p { opacity: 0.8; margin-top: 0.3rem; font-size: 0.9rem; }
-
-    .deal-banner .deal-emoji { font-size: 3.5rem; }
-
-    .btn-white {
-      background: white;
-      color: var(--blue);
-      border: none;
-      padding: 0.65rem 1.5rem;
-      border-radius: 50px;
-      font-weight: 700;
-      cursor: pointer;
-      font-size: 0.9rem;
-      transition: transform 0.2s;
-      white-space: nowrap;
-    }
-
-    .btn-white:hover { transform: scale(1.05); }
-
-    /* ── SECTION ── */
-    .section-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 1.25rem;
-    }
-
-    .section-header h2 {
-      font-size: 1.5rem;
-      font-weight: 800;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-
-    .see-all {
-      color: var(--red);
-      font-size: 0.9rem;
-      font-weight: 600;
-      cursor: pointer;
-      text-decoration: none;
-    }
-
-    /* ── PIZZA GRID ── */
-    .pizza-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-      gap: 1.25rem;
-    }
-
-    .pizza-card {
-      background: white;
-      border-radius: 14px;
-      overflow: hidden;
-      border: 1px solid var(--border);
-      transition: transform 0.25s, box-shadow 0.25s;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .pizza-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 12px 35px rgba(0,0,0,0.12);
-    }
-
-    .pizza-img {
-      background: #fdf0f0;
-      height: 170px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 5.5rem;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .pizza-badge {
-      position: absolute;
-      top: 10px;
-      left: 10px;
-      background: var(--red);
-      color: white;
-      font-size: 0.7rem;
-      font-weight: 700;
-      padding: 0.25rem 0.6rem;
-      border-radius: 50px;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-
-    .pizza-badge.veg {
-      background: #4caf50;
-    }
-
-    .pizza-badge.best {
-      background: #ff9800;
-    }
-
-    .pizza-body {
-      padding: 1rem 1.1rem 1.1rem;
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .pizza-name {
-      font-size: 1rem;
-      font-weight: 700;
-      margin-bottom: 0.35rem;
-      color: var(--dark);
-    }
-
-    .pizza-desc {
-      font-size: 0.8rem;
-      color: var(--gray);
-      line-height: 1.5;
-      flex: 1;
-      margin-bottom: 0.85rem;
-    }
-
-    .pizza-footer {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .pizza-price {
-      font-size: 1.15rem;
-      font-weight: 800;
-      color: var(--dark);
-    }
-
-    .pizza-price span {
-      font-size: 0.75rem;
-      font-weight: 500;
-      color: var(--gray);
-      text-decoration: line-through;
-      margin-left: 4px;
-    }
-
-    .add-btn {
-      background: var(--red);
-      color: white;
-      border: none;
-      padding: 0.5rem 1.1rem;
-      border-radius: 50px;
-      font-size: 0.85rem;
-      font-weight: 700;
-      cursor: pointer;
-      transition: background 0.2s, transform 0.15s;
-      display: flex;
-      align-items: center;
-      gap: 0.3rem;
-    }
-
-    .add-btn:hover { background: var(--dark-red); transform: scale(1.05); }
-
-    .qty-control {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      background: var(--red);
-      border-radius: 50px;
-      padding: 0.3rem 0.5rem;
-    }
-
-    .qty-btn {
-      background: none;
-      border: none;
-      color: white;
-      font-size: 1.1rem;
-      font-weight: 700;
-      cursor: pointer;
-      width: 22px;
-      height: 22px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: 50%;
-      transition: background 0.2s;
-    }
-
-    .qty-btn:hover { background: rgba(255,255,255,0.25); }
-    .qty-num { color: white; font-weight: 700; font-size: 0.9rem; min-width: 16px; text-align: center; }
-
-    /* ── SIDES GRID ── */
-    .sides-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-      gap: 1rem;
-    }
-
-    .side-card {
-      background: white;
-      border-radius: 12px;
-      border: 1px solid var(--border);
-      overflow: hidden;
-      text-align: center;
-      transition: transform 0.2s, box-shadow 0.2s;
-      cursor: pointer;
-    }
-
-    .side-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-    }
-
-    .side-img {
-      height: 110px;
-      background: #fff8f0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 3.5rem;
-    }
-
-    .side-body { padding: 0.75rem; }
-    .side-name { font-size: 0.85rem; font-weight: 700; margin-bottom: 0.25rem; }
-    .side-price { font-size: 0.9rem; font-weight: 800; color: var(--red); }
-
-    .side-add {
-      margin-top: 0.5rem;
-      background: none;
-      border: 2px solid var(--red);
-      color: var(--red);
-      border-radius: 50px;
-      padding: 0.3rem 0.9rem;
-      font-size: 0.78rem;
-      font-weight: 700;
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-
-    .side-add:hover { background: var(--red); color: white; }
-
-    /* ── CART PANEL ── */
-    .cart-overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.5);
-      z-index: 2000;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.3s;
-    }
-
-    .cart-overlay.open { opacity: 1; pointer-events: all; }
-
-    .cart-panel {
-      position: fixed;
-      top: 0;
-      right: -420px;
-      width: 100%;
-      max-width: 420px;
-      height: 100%;
-      background: white;
-      z-index: 2100;
-      display: flex;
-      flex-direction: column;
-      transition: right 0.35s cubic-bezier(0.4,0,0.2,1);
-      box-shadow: -5px 0 30px rgba(0,0,0,0.15);
-    }
-
-    .cart-panel.open { right: 0; }
-
-    .cart-header {
-      background: var(--red);
-      color: white;
-      padding: 1.1rem 1.5rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .cart-header h3 { font-size: 1.1rem; font-weight: 700; }
-
-    .cart-close {
-      background: rgba(255,255,255,0.2);
-      border: none;
-      color: white;
-      width: 32px;
-      height: 32px;
-      border-radius: 50%;
-      font-size: 1.1rem;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .cart-body {
-      flex: 1;
-      overflow-y: auto;
-      padding: 1rem 1.5rem;
-    }
-
-    .cart-empty {
-      text-align: center;
-      padding: 3rem 1rem;
-    }
-
-    .cart-empty .empty-icon { font-size: 4rem; margin-bottom: 1rem; }
-    .cart-empty h4 { font-size: 1.1rem; color: var(--dark); margin-bottom: 0.5rem; }
-    .cart-empty p { color: var(--gray); font-size: 0.875rem; }
-
-    .cart-item {
-      display: flex;
-      align-items: center;
-      gap: 0.85rem;
-      padding: 0.85rem 0;
-      border-bottom: 1px solid var(--border);
-    }
-
-    .cart-item-emoji { font-size: 2rem; width: 44px; text-align: center; }
-
-    .cart-item-info { flex: 1; }
-    .cart-item-info h4 { font-size: 0.9rem; font-weight: 700; }
-    .cart-item-info p { font-size: 0.78rem; color: var(--gray); margin-top: 2px; }
-
-    .cart-item-right { display: flex; flex-direction: column; align-items: flex-end; gap: 0.5rem; }
-    .cart-item-price { font-size: 0.95rem; font-weight: 800; }
-
-    .cart-item-qty {
-      display: flex;
-      align-items: center;
-      gap: 0.4rem;
-      background: #f5f5f5;
-      border-radius: 50px;
-      padding: 0.2rem 0.4rem;
-    }
-
-    .cq-btn {
-      background: none;
-      border: none;
-      font-size: 1rem;
-      font-weight: 700;
-      cursor: pointer;
-      color: var(--red);
-      width: 20px;
-      height: 20px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .cq-num { font-size: 0.85rem; font-weight: 700; min-width: 16px; text-align: center; }
-
-    .remove-btn {
-      background: none;
-      border: none;
-      color: #ccc;
-      font-size: 0.8rem;
-      cursor: pointer;
-      transition: color 0.2s;
-    }
-
-    .remove-btn:hover { color: var(--red); }
-
-    .cart-footer {
-      border-top: 2px solid var(--border);
-      padding: 1.25rem 1.5rem;
-    }
-
-    .cart-promo {
-      display: flex;
-      gap: 0.5rem;
-      margin-bottom: 1rem;
-    }
-
-    .cart-promo input {
-      flex: 1;
-      border: 1.5px solid var(--border);
-      border-radius: 8px;
-      padding: 0.6rem 0.9rem;
-      font-size: 0.875rem;
-      outline: none;
-      transition: border-color 0.2s;
-    }
-
-    .cart-promo input:focus { border-color: var(--red); }
-
-    .promo-btn {
-      background: var(--blue);
-      color: white;
-      border: none;
-      border-radius: 8px;
-      padding: 0.6rem 1rem;
-      font-size: 0.85rem;
-      font-weight: 700;
-      cursor: pointer;
-    }
-
-    .cart-summary { margin-bottom: 1rem; }
-
-    .summary-row {
-      display: flex;
-      justify-content: space-between;
-      font-size: 0.875rem;
-      color: var(--gray);
-      margin-bottom: 0.4rem;
-    }
-
-    .summary-row.total {
-      color: var(--dark);
-      font-weight: 800;
-      font-size: 1.05rem;
-      border-top: 1px solid var(--border);
-      padding-top: 0.6rem;
-      margin-top: 0.4rem;
-    }
-
-    .checkout-btn {
-      width: 100%;
-      background: var(--red);
-      color: white;
-      border: none;
-      padding: 1rem;
-      border-radius: 10px;
-      font-size: 1rem;
-      font-weight: 800;
-      cursor: pointer;
-      transition: background 0.2s;
-      letter-spacing: 0.5px;
-    }
-
-    .checkout-btn:hover { background: var(--dark-red); }
-
-    /* ── ORDER SUCCESS MODAL ── */
-    .modal-overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.6);
-      z-index: 3000;
-      display: none;
-      align-items: center;
-      justify-content: center;
-      padding: 1rem;
-    }
-
-    .modal-overlay.open { display: flex; }
-
-    .modal {
-      background: white;
-      border-radius: 20px;
-      padding: 2.5rem 2rem;
-      max-width: 420px;
-      width: 100%;
-      text-align: center;
-      animation: popIn 0.4s cubic-bezier(0.4,0,0.2,1);
-    }
-
-    @keyframes popIn {
-      from { transform: scale(0.85); opacity: 0; }
-      to { transform: scale(1); opacity: 1; }
-    }
-
-    .modal-icon { font-size: 4rem; margin-bottom: 1rem; }
-    .modal h2 { font-size: 1.6rem; font-weight: 900; margin-bottom: 0.5rem; }
-    .modal p { color: var(--gray); font-size: 0.9rem; line-height: 1.6; margin-bottom: 0.5rem; }
-
-    .track-bar {
-      background: var(--light);
-      border-radius: 12px;
-      padding: 1.25rem;
-      margin: 1.25rem 0;
-    }
-
-    .track-steps {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 0.25rem;
-    }
-
-    .track-step { text-align: center; flex: 1; }
-
-    .track-dot {
-      width: 32px;
-      height: 32px;
-      border-radius: 50%;
-      background: #e0e0e0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 0.9rem;
-      margin: 0 auto 0.4rem;
-    }
-
-    .track-dot.done { background: var(--red); }
-    .track-step p { font-size: 0.68rem; color: var(--gray); }
-
-    .track-line {
-      flex: 1;
-      height: 3px;
-      background: #e0e0e0;
-      border-radius: 3px;
-    }
-
-    .track-line.done { background: var(--red); }
-
-    .order-num {
-      background: #fff3f5;
-      border: 1.5px dashed var(--red);
-      border-radius: 10px;
-      padding: 0.75rem;
-      font-size: 1rem;
-      font-weight: 800;
-      color: var(--red);
-      margin-bottom: 1.25rem;
-    }
-
-    .modal-close {
-      background: var(--red);
-      color: white;
-      border: none;
-      width: 100%;
-      padding: 0.9rem;
-      border-radius: 10px;
-      font-size: 0.95rem;
-      font-weight: 700;
-      cursor: pointer;
-    }
-
-    /* ── OFFERS STRIP ── */
-    .offers-strip {
-      background: white;
-      border-radius: 14px;
-      padding: 1.25rem 1.5rem;
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 1rem;
-    }
-
-    .offer-item {
-      display: flex;
-      align-items: center;
-      gap: 0.85rem;
-      padding: 0.85rem;
-      background: var(--light);
-      border-radius: 10px;
-      cursor: pointer;
-      transition: background 0.2s;
-    }
-
-    .offer-item:hover { background: #ffe5e9; }
-    .offer-emoji { font-size: 2rem; }
-    .offer-text h4 { font-size: 0.9rem; font-weight: 700; }
-    .offer-text p { font-size: 0.75rem; color: var(--gray); }
-
-    /* ── FOOTER ── */
-    footer {
-      background: var(--dark);
-      color: #aaa;
-      padding: 3rem 1.5rem 1.5rem;
-      margin-top: 2rem;
-    }
-
-    .footer-inner {
-      max-width: 1200px;
-      margin: 0 auto;
-    }
-
-    .footer-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-      gap: 2rem;
-      margin-bottom: 2rem;
-    }
-
-    .footer-col h4 {
-      color: white;
-      font-size: 0.95rem;
-      font-weight: 700;
-      margin-bottom: 1rem;
-    }
-
-    .footer-col a {
-      display: block;
-      color: #888;
-      text-decoration: none;
-      font-size: 0.85rem;
-      margin-bottom: 0.5rem;
-      transition: color 0.2s;
-    }
-
-    .footer-col a:hover { color: var(--red); }
-
-    .footer-logo {
-      font-size: 1.8rem;
-      font-weight: 900;
-      color: var(--red);
-      margin-bottom: 0.75rem;
-    }
-
-    .footer-col p { font-size: 0.82rem; line-height: 1.7; }
-
-    .social-links { display: flex; gap: 0.75rem; margin-top: 1rem; }
-
-    .social-link {
-      width: 36px;
-      height: 36px;
-      background: #2a2a2a;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1rem;
-      text-decoration: none;
-      transition: background 0.2s;
-    }
-
-    .social-link:hover { background: var(--red); }
-
-    .footer-bottom {
-      border-top: 1px solid #2a2a2a;
-      padding-top: 1.25rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 0.75rem;
-    }
-
-    .footer-bottom p { font-size: 0.8rem; }
-
-    .payment-icons { display: flex; gap: 0.5rem; flex-wrap: wrap; }
-
-    .pay-icon {
-      background: #2a2a2a;
-      padding: 0.25rem 0.6rem;
-      border-radius: 5px;
-      font-size: 0.75rem;
-      color: #ccc;
-    }
-
-    /* ── TOAST ── */
-    .toast {
-      position: fixed;
-      bottom: 1.5rem;
-      left: 50%;
-      transform: translateX(-50%) translateY(80px);
-      background: #1a1a1a;
-      color: white;
-      padding: 0.75rem 1.5rem;
-      border-radius: 50px;
-      font-size: 0.875rem;
-      font-weight: 600;
-      z-index: 4000;
-      transition: transform 0.35s;
-      white-space: nowrap;
-      pointer-events: none;
-    }
-
-    .toast.show { transform: translateX(-50%) translateY(0); }
-
-    /* ── RESPONSIVE ── */
-    @media (max-width: 640px) {
-      .nav-search { display: none; }
-      .nav-link span:last-child { display: none; }
-      .deal-banner { flex-direction: column; text-align: center; }
-      .cart-panel { max-width: 100%; }
-    }
-  </style>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
   <!-- TOPBAR -->
-  <div class="topbar">🔥 FREE delivery on orders over \$20 | Use code: <strong>PIZZA20</strong> for 20% off!</div>
+  <div class="topbar">
+    🔥 FREE delivery on orders over \$20 &nbsp;|&nbsp; Use code <strong>PIZZA20</strong> for 20% off!
+  </div>
 
   <!-- NAVBAR -->
   <nav>
@@ -986,28 +19,25 @@
       <a href="#" class="logo">
         <span class="logo-icon">🍕</span>
         <div class="logo-text">
-          <span>PizzaHub</span>
-          <span>Hot & Fresh</span>
+          <span class="brand">PizzaHub</span>
+          <span class="sub">Hot &amp; Fresh</span>
         </div>
       </a>
-
       <div class="nav-search">
-        <input type="text" placeholder="Search pizzas, sides, drinks..." id="searchInput" oninput="handleSearch()" />
+        <input type="text" id="searchInput" placeholder="Search pizzas, sides, drinks…" oninput="handleSearch()" />
         <button>🔍</button>
       </div>
-
       <div class="nav-actions">
         <a href="#" class="nav-link">
           <span class="icon">📍</span>
-          <span>Track</span>
+          <span class="lbl">Track</span>
         </a>
         <a href="#" class="nav-link">
           <span class="icon">👤</span>
-          <span>Sign In</span>
+          <span class="lbl">Sign In</span>
         </a>
         <button class="cart-btn" onclick="toggleCart()">
-          🛒 Cart
-          <span class="cart-count" id="cartCount">0</span>
+          🛒 Cart <span class="cart-count" id="cartCount">0</span>
         </button>
       </div>
     </div>
@@ -1017,13 +47,13 @@
   <div class="hero">
     <div class="hero-inner">
       <div class="delivery-bar">
-        <div class="delivery-tab active" onclick="setTab(this,'Delivery')">🛵 Delivery</div>
-        <div class="delivery-tab" onclick="setTab(this,'Carryout')">🏃 Carryout</div>
-        <div class="delivery-tab" onclick="setTab(this,'Dine In')">🍽️ Dine In</div>
+        <div class="delivery-tab active" onclick="setDeliveryTab(this,'Delivery')">🛵 Delivery</div>
+        <div class="delivery-tab" onclick="setDeliveryTab(this,'Carryout')">🏃 Carryout</div>
+        <div class="delivery-tab" onclick="setDeliveryTab(this,'Dine In')">🍽️ Dine In</div>
       </div>
       <h1>Pizza Made <span>Your Way</span><br/>Delivered Fast 🔥</h1>
-      <p>Fresh ingredients, hand-tossed dough, and melted cheese — ready in 30 minutes or less.</p>
-      <div class="hero-offer">
+      <p>Fresh ingredients, hand-tossed dough and melted cheese — ready in 30 minutes or less.</p>
+      <div class="hero-offers">
         <div class="offer-badge">🎉 2 Large Pizzas for \$19.99</div>
         <div class="offer-badge">⚡ 30-min Delivery Guarantee</div>
         <div class="offer-badge">🎁 Free Garlic Bread on \$25+</div>
@@ -1031,59 +61,47 @@
     </div>
   </div>
 
-  <!-- CATEGORY TABS -->
+  <!-- CATEGORY BAR -->
   <div class="categories">
     <div class="cat-inner">
-      <div class="cat-item active" onclick="scrollTo('#pizzas', this)">🍕 Pizzas</div>
-      <div class="cat-item" onclick="scrollTo('#sides', this)">🍟 Sides</div>
-      <div class="cat-item" onclick="scrollTo('#drinks', this)">🥤 Drinks</div>
-      <div class="cat-item" onclick="scrollTo('#desserts', this)">🍰 Desserts</div>
-      <div class="cat-item" onclick="scrollTo('#deals', this)">🔖 Deals</div>
+      <div class="cat-item active" onclick="scrollToSection('pizzas', this)">🍕 Pizzas</div>
+      <div class="cat-item" onclick="scrollToSection('sides', this)">🍟 Sides</div>
+      <div class="cat-item" onclick="scrollToSection('drinks', this)">🥤 Drinks</div>
+      <div class="cat-item" onclick="scrollToSection('desserts', this)">🍰 Desserts</div>
+      <div class="cat-item" onclick="scrollToSection('deals', this)">🔖 Deals</div>
     </div>
   </div>
 
-  <!-- MAIN CONTENT -->
+  <!-- MAIN -->
   <div class="main">
 
     <!-- DEAL BANNER -->
     <div class="deal-banner">
       <div>
-        <h2>Mix & Match – Any 2 for \$6.99 each</h2>
-        <p>Pick any 2 medium 2-topping pizzas, bread twists, salads, or pastas!</p>
+        <h2>Mix &amp; Match – Any 2 for \$6.99 each</h2>
+        <p>Pick any 2 medium 2-topping pizzas, bread twists, salads or pastas!</p>
       </div>
       <div class="deal-emoji">🔖</div>
-      <button class="btn-white" onclick="showToast('Deal added to your session!')">Order Now</button>
+      <button class="btn-white" onclick="showToast('🎉 Deal added!')">Order Now</button>
     </div>
 
-    <!-- OFFERS -->
+    <!-- OFFERS STRIP -->
     <div class="offers-strip">
       <div class="offer-item">
         <div class="offer-emoji">🎉</div>
-        <div class="offer-text">
-          <h4>Weekly Specials</h4>
-          <p>New deals every Monday</p>
-        </div>
+        <div class="offer-text"><h4>Weekly Specials</h4><p>New deals every Monday</p></div>
       </div>
       <div class="offer-item">
         <div class="offer-emoji">🎓</div>
-        <div class="offer-text">
-          <h4>Student Discount</h4>
-          <p>15% off with valid student ID</p>
-        </div>
+        <div class="offer-text"><h4>Student Discount</h4><p>15% off with valid student ID</p></div>
       </div>
       <div class="offer-item">
         <div class="offer-emoji">👨‍👩‍👧</div>
-        <div class="offer-text">
-          <h4>Family Bundle</h4>
-          <p>3 pizzas + 2 sides for \$34.99</p>
-        </div>
+        <div class="offer-text"><h4>Family Bundle</h4><p>3 pizzas + 2 sides for \$34.99</p></div>
       </div>
       <div class="offer-item">
         <div class="offer-emoji">📱</div>
-        <div class="offer-text">
-          <h4>App Exclusive</h4>
-          <p>Extra 10% off via mobile</p>
-        </div>
+        <div class="offer-text"><h4>App Exclusive</h4><p>Extra 10% off via mobile</p></div>
       </div>
     </div>
 
@@ -1099,7 +117,7 @@
     <!-- SIDES -->
     <div id="sides">
       <div class="section-header">
-        <h2>🍟 Sides & Starters</h2>
+        <h2>🍟 Sides &amp; Starters</h2>
         <a class="see-all">See all →</a>
       </div>
       <div class="sides-grid" id="sidesGrid"></div>
@@ -1111,6 +129,14 @@
         <h2>🥤 Drinks</h2>
       </div>
       <div class="sides-grid" id="drinksGrid"></div>
+    </div>
+
+    <!-- DESSERTS -->
+    <div id="desserts">
+      <div class="section-header">
+        <h2>🍰 Desserts</h2>
+      </div>
+      <div class="sides-grid" id="dessertsGrid"></div>
     </div>
 
   </div>
@@ -1177,10 +203,10 @@
     <div class="cart-body" id="cartBody"></div>
     <div class="cart-footer" id="cartFooter" style="display:none">
       <div class="cart-promo">
-        <input type="text" id="promoInput" placeholder="Enter promo code" />
+        <input type="text" id="promoInput" placeholder="Promo code (try PIZZA20)" />
         <button class="promo-btn" onclick="applyPromo()">Apply</button>
       </div>
-      <div class="cart-summary" id="cartSummary"></div>
+      <div id="cartSummary"></div>
       <button class="checkout-btn" onclick="checkout()">Place Order →</button>
     </div>
   </div>
@@ -1190,29 +216,29 @@
     <div class="modal">
       <div class="modal-icon">🎉</div>
       <h2>Order Placed!</h2>
-      <p>Your pizza is being prepared with love. Estimated delivery time:</p>
-      <p><strong style="color:var(--red); font-size:1.3rem;">25–35 minutes</strong></p>
+      <p>Your pizza is being prepared with love.<br/>Estimated delivery time:</p>
+      <p><strong style="color:var(--red);font-size:1.3rem;">25–35 minutes</strong></p>
       <div class="order-num" id="orderNum">#PIZ-000000</div>
       <div class="track-bar">
         <div class="track-steps">
           <div class="track-step">
             <div class="track-dot done">✅</div>
-            <p>Confirmed</p>
+            <span>Confirmed</span>
           </div>
           <div class="track-line done"></div>
           <div class="track-step">
             <div class="track-dot done">👨‍🍳</div>
-            <p>Preparing</p>
+            <span>Preparing</span>
           </div>
           <div class="track-line"></div>
           <div class="track-step">
             <div class="track-dot">🛵</div>
-            <p>On the way</p>
+            <span>On the way</span>
           </div>
           <div class="track-line"></div>
           <div class="track-step">
             <div class="track-dot">🏠</div>
-            <p>Delivered</p>
+            <span>Delivered</span>
           </div>
         </div>
       </div>
@@ -1223,265 +249,6 @@
   <!-- TOAST -->
   <div class="toast" id="toast"></div>
 
-  <script>
-    // ── DATA ──
-    const pizzas = [
-      { id: 1, name: "Pepperoni Feast", emoji: "🍕", price: 13.99, oldPrice: 17.99, desc: "Loaded with premium pepperoni, mozzarella on our classic tomato sauce.", badge: "Best Seller", badgeClass: "best" },
-      { id: 2, name: "Margherita Classic", emoji: "🫒", price: 11.99, oldPrice: null, desc: "Fresh basil, premium mozzarella and our signature tomato sauce.", badge: "Veg", badgeClass: "veg" },
-      { id: 3, name: "BBQ Chicken", emoji: "🍗", price: 14.99, oldPrice: 18.99, desc: "Grilled chicken, red onions, BBQ sauce and mozzarella cheese.", badge: "New", badgeClass: "" },
-      { id: 4, name: "Veggie Supreme", emoji: "🥦", price: 12.99, oldPrice: null, desc: "Bell peppers, mushrooms, olives, onions and sweet corn.", badge: "Veg", badgeClass: "veg" },
-      { id: 5, name: "Meat Lovers", emoji: "🥩", price: 15.99, oldPrice: 19.99, desc: "Pepperoni, sausage, bacon, ham and beef meatballs.", badge: "Hot", badgeClass: "" },
-      { id: 6, name: "Hawaiian Delight", emoji: "🍍", price: 12.99, oldPrice: null, desc: "Ham and pineapple on a honey-glazed tomato sauce.", badge: "", badgeClass: "" },
-      { id: 7, name: "Truffle Mushroom", emoji: "🍄", price: 16.99, oldPrice: null, desc: "Wild mushrooms, truffle oil, parmesan and fresh thyme.", badge: "Premium", badgeClass: "best" },
-      { id: 8, name: "Spicy Inferno", emoji: "🌶️", price: 13.99, oldPrice: null, desc: "Jalapeños, hot sauce base, spicy sausage and chilli flakes.", badge: "Hot", badgeClass: "" },
-    ];
-
-    const sides = [
-      { id: 101, name: "Garlic Bread", emoji: "🥖", price: 3.99 },
-      { id: 102, name: "Chicken Wings", emoji: "🍗", price: 6.99 },
-      { id: 103, name: "Mozzarella Sticks", emoji: "🧀", price: 5.49 },
-      { id: 104, name: "Caesar Salad", emoji: "🥗", price: 5.99 },
-      { id: 105, name: "Potato Wedges", emoji: "🍟", price: 3.49 },
-      { id: 106, name: "Onion Rings", emoji: "🧅", price: 3.99 },
-    ];
-
-    const drinks = [
-      { id: 201, name: "Cola (2L)", emoji: "🥤", price: 2.99 },
-      { id: 202, name: "Diet Cola", emoji: "🥤", price: 2.99 },
-      { id: 203, name: "Lemonade", emoji: "🍋", price: 2.49 },
-      { id: 204, name: "Water", emoji: "💧", price: 1.49 },
-    ];
-
-    let cart = {};
-    let promoApplied = false;
-
-    // ── RENDER PIZZAS ──
-    function renderPizzas(list) {
-      const grid = document.getElementById('pizzaGrid');
-      grid.innerHTML = list.map(p => `
-        <div class="pizza-card" id="card-${p.id}">
-          <div class="pizza-img">
-            ${p.badge ? `<div class="pizza-badge ${p.badgeClass}">${p.badge}</div>` : ''}
-            ${p.emoji}
-          </div>
-          <div class="pizza-body">
-            <div class="pizza-name">${p.name}</div>
-            <div class="pizza-desc">${p.desc}</div>
-            <div class="pizza-footer">
-              <div class="pizza-price">
-                
-$$
-{p.price.toFixed(2)}
-                ${p.oldPrice ? `<span>
-$$
-{p.oldPrice.toFixed(2)}</span>` : ''}
-              </div>
-              <div id="ctrl-${p.id}">${renderAddBtn(p.id)}</div>
-            </div>
-          </div>
-        </div>
-      `).join('');
-    }
-
-    function renderAddBtn(id) {
-      const qty = cart[id]?.qty || 0;
-      if (qty === 0) {
-        return `<button class="add-btn" onclick="addToCart(${id})">+ Add</button>`;
-      }
-      return `
-        <div class="qty-control">
-          <button class="qty-btn" onclick="changeQty(${id}, -1)">−</button>
-          <span class="qty-num">${qty}</span>
-          <button class="qty-btn" onclick="changeQty(${id}, 1)">+</button>
-        </div>`;
-    }
-
-    // ── RENDER SIDES ──
-    function renderSides() {
-      ['sidesGrid', 'drinksGrid'].forEach((gridId, i) => {
-        const arr = i === 0 ? sides : drinks;
-        document.getElementById(gridId).innerHTML = arr.map(s => `
-          <div class="side-card">
-            <div class="side-img">${s.emoji}</div>
-            <div class="side-body">
-              <div class="side-name">${s.name}</div>
-              <div class="side-price">
-$$
-{s.price.toFixed(2)}</div>
-              <button class="side-add" onclick="addSide(${s.id}, '${s.name}', ${s.price}, '${s.emoji}')">+ Add</button>
-            </div>
-          </div>
-        `).join('');
-      });
-    }
-
-    // ── CART LOGIC ──
-    function addToCart(id) {
-      const item = pizzas.find(p => p.id === id);
-      if (!cart[id]) cart[id] = { ...item, qty: 0 };
-      cart[id].qty++;
-      updateCartUI();
-      document.getElementById(`ctrl-${id}`).innerHTML = renderAddBtn(id);
-      showToast(`🍕 ${item.name} added to cart!`);
-    }
-
-    function changeQty(id, delta) {
-      if (!cart[id]) return;
-      cart[id].qty += delta;
-      if (cart[id].qty <= 0) delete cart[id];
-      updateCartUI();
-      const ctrl = document.getElementById(`ctrl-${id}`);
-      if (ctrl) ctrl.innerHTML = renderAddBtn(id);
-    }
-
-    function addSide(id, name, price, emoji) {
-      if (!cart[id]) cart[id] = { id, name, price, emoji, qty: 0 };
-      cart[id].qty++;
-      updateCartUI();
-      showToast(`${emoji} ${name} added to cart!`);
-    }
-
-    function removeFromCart(id) {
-      delete cart[id];
-      updateCartUI();
-      const ctrl = document.getElementById(`ctrl-${id}`);
-      if (ctrl) ctrl.innerHTML = renderAddBtn(id);
-    }
-
-    function updateCartUI() {
-      const items = Object.values(cart);
-      const totalQty = items.reduce((s, i) => s + i.qty, 0);
-      document.getElementById('cartCount').textContent = totalQty;
-
-      const body = document.getElementById('cartBody');
-      const footer = document.getElementById('cartFooter');
-
-      if (items.length === 0) {
-        body.innerHTML = `
-          <div class="cart-empty">
-            <div class="empty-icon">🍕</div>
-            <h4>Your cart is empty</h4>
-            <p>Add some delicious pizzas and sides to get started!</p>
-          </div>`;
-        footer.style.display = 'none';
-        return;
-      }
-
-      body.innerHTML = items.map(item => `
-        <div class="cart-item">
-          <div class="cart-item-emoji">${item.emoji}</div>
-          <div class="cart-item-info">
-            <h4>${item.name}</h4>
-            <p>
-$$
-{item.price.toFixed(2)} each</p>
-          </div>
-          <div class="cart-item-right">
-            <span class="cart-item-price">
-$$
-{(item.price * item.qty).toFixed(2)}</span>
-            <div class="cart-item-qty">
-              <button class="cq-btn" onclick="changeQty(${item.id}, -1)">−</button>
-              <span class="cq-num">${item.qty}</span>
-              <button class="cq-btn" onclick="changeQty(${item.id}, 1)">+</button>
-            </div>
-            <button class="remove-btn" onclick="removeFromCart(${item.id})">✕ Remove</button>
-          </div>
-        </div>
-      `).join('');
-
-      const subtotal = items.reduce((s, i) => s + i.price * i.qty, 0);
-      const delivery = subtotal >= 20 ? 0 : 2.99;
-      const discount = promoApplied ? subtotal * 0.2 : 0;
-      const tax = (subtotal - discount) * 0.08;
-      const total = subtotal - discount + delivery + tax;
-
-      document.getElementById('cartSummary').innerHTML = `
-        <div class="summary-row"><span>Subtotal</span><span>
-$$
-{subtotal.toFixed(2)}</span></div>
-        ${discount > 0 ? `<div class="summary-row" style="color:green"><span>Promo (PIZZA20)</span><span>-
-$$
-{discount.toFixed(2)}</span></div>` : ''}
-        <div class="summary-row"><span>Delivery</span><span>${delivery === 0 ? '🎉 FREE' : '$' + delivery.toFixed(2)}</span></div>
-        <div class="summary-row"><span>Tax (8%)</span><span>
-$$
-{tax.toFixed(2)}</span></div>
-        <div class="summary-row total"><span>Total</span><span>$${total.toFixed(2)}</span></div>`;
-
-      footer.style.display = 'block';
-    }
-
-    // ── PROMO ──
-    function applyPromo() {
-      const code = document.getElementById('promoInput').value.trim().toUpperCase();
-      if (code === 'PIZZA20') {
-        promoApplied = true;
-        updateCartUI();
-        showToast('🎉 Promo applied! 20% off!');
-      } else {
-        showToast('❌ Invalid promo code');
-      }
-    }
-
-    // ── CHECKOUT ──
-    function checkout() {
-      const orderNum = '#PIZ-' + Math.floor(100000 + Math.random() * 900000);
-      document.getElementById('orderNum').textContent = orderNum;
-      document.getElementById('modalOverlay').classList.add('open');
-      cart = {};
-      promoApplied = false;
-      updateCartUI();
-      toggleCart();
-      renderPizzas(pizzas);
-    }
-
-    function closeModal() {
-      document.getElementById('modalOverlay').classList.remove('open');
-    }
-
-    // ── CART TOGGLE ──
-    function toggleCart() {
-      document.getElementById('cartPanel').classList.toggle('open');
-      document.getElementById('cartOverlay').classList.toggle('open');
-    }
-
-    // ── DELIVERY TABS ──
-    function setTab(el, name) {
-      document.querySelectorAll('.delivery-tab').forEach(t => t.classList.remove('active'));
-      el.classList.add('active');
-      showToast(`Mode set to: ${name}`);
-    }
-
-    // ── CATEGORY NAV ──
-    function scrollTo(id, el) {
-      document.querySelectorAll('.cat-item').forEach(c => c.classList.remove('active'));
-      el.classList.add('active');
-      document.querySelector(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-
-    // ── SEARCH ──
-    function handleSearch() {
-      const q = document.getElementById('searchInput').value.toLowerCase();
-      const filtered = q ? pizzas.filter(p =>
-        p.name.toLowerCase().includes(q) || p.desc.toLowerCase().includes(q)
-      ) : pizzas;
-      renderPizzas(filtered);
-    }
-
-    // ── TOAST ──
-    function showToast(msg) {
-      const t = document.getElementById('toast');
-      t.textContent = msg;
-      t.classList.add('show');
-      clearTimeout(t._timeout);
-      t._timeout = setTimeout(() => t.classList.remove('show'), 2500);
-    }
-
-    // ── INIT ──
-    renderPizzas(pizzas);
-    renderSides();
-    updateCartUI();
-  </script>
+  <script src="script.js"></script>
 </body>
 </html>
